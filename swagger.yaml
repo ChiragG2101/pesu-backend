@@ -58,6 +58,7 @@ paths:
       tags:
         - Auth
       summary: User login
+      security: []
       requestBody:
         required: true
         content:
@@ -154,6 +155,7 @@ paths:
       tags:
         - Health
       summary: Health check
+      security: []
       responses:
         "200":
           description: API is UP & Running
