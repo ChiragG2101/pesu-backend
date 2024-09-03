@@ -1,15 +1,11 @@
 import express from "express";
-import {
-  getPeople,
-  //   createPeople,
-  updatePeople,
-} from "../controllers/peopleController";
+import { getPeople, createPeople } from "../controllers/peopleController";
 import auth from "../middleware/auth";
+import { createPeopleValidator } from "../validators/people-validators";
 
 const router = express.Router();
 
 router.get("/", auth, getPeople);
-router.post("/", auth, updatePeople);
-router.put("/:id", auth, updatePeople);
+router.post("/", auth, createPeopleValidator, createPeople);
 
 export default router;

@@ -12,38 +12,37 @@ components:
 security:
   - bearerAuth: []
 paths:
-  /api/auth/login:
-    post:
-      summary: Login to get JWT token
-      tags:
-        - Authentication
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
+  /api/people:
+    get:
+      summary: Get all people
       responses:
-        '200':
-          description: Successful login
+        "200":
+          description: Successful response
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  token:
-                    type: string
-  /api/people:
-    get:
-      summary: Get all people
-      responses:
-        '200':
-          description: Successful response
+                  totalCount:
+                    type: integer
+                  people:
+                    type: array
+                    minItems: 4
+                    uniqueItems: true
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum: [man, woman, boy, girl]
+                        count:
+                          type: integer
+                    contains:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum: [man, woman, boy, girl]
     post:
       summary: Create new people entry
       requestBody:
@@ -51,34 +50,36 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum: [man, woman, boy, girl]
-                count:
-                  type: integer
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [man, woman, boy, girl]
+                  count:
+                    type: integer
+              example:
+                - type: man
+                  count: 10
+                - type: woman
+                  count: 15
+                - type: boy
+                  count: 5
+                - type: girl
+                  count: 8
       responses:
-        '201':
+        "201":
           description: Created
-  /api/people/{id}:
-    put:
-      summary: Update people count
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                count:
-                  type: integer
-      responses:
-        '200':
-          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [man, woman, boy, girl]
+                    count:
+                      type: integer
