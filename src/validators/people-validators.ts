@@ -12,7 +12,12 @@ const createPeopleSchema = {
     type: "object",
     properties: {
       type: { type: "string", enum: Object.values(PersonType) },
-      count: { type: "integer", minimum: 0 },
+      count: {
+        anyOf: [
+          { type: "integer", minimum: 0 },
+          { type: "string", pattern: "^[0-9]+$" },
+        ],
+      },
     },
     required: ["type", "count"],
     additionalProperties: false,
@@ -32,7 +37,6 @@ const validate =
   (schema: object) => (req: Request, res: Response, next: NextFunction) => {
     const validate = ajv.compile(schema);
     const valid = validate(req.body);
-    console.log(valid, validate.errors);
     if (!valid) {
       const errorMessages = validate.errors?.map((error) => {
         if (error.keyword === "minItems") {
