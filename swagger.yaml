@@ -9,6 +9,39 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  schemas:
+    CreatePeople:
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [man, woman, boy, girl]
+          count:
+            type: integer
+            minimum: 0
+        required: ["type", "count"]
+        additionalProperties: false
+      minItems: 4
+      uniqueItems: true
+      contains:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [man, woman, boy, girl]
+        required: ["type"]
+    People:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [man, woman, boy, girl]
+        count:
+          type: integer
+          minimum: 0
+      required: ["type", "count"]
 security:
   - bearerAuth: []
 paths:
@@ -30,19 +63,9 @@ paths:
                     minItems: 4
                     uniqueItems: true
                     items:
-                      type: object
-                      properties:
-                        type:
-                          type: string
-                          enum: [man, woman, boy, girl]
-                        count:
-                          type: integer
+                      $ref: "#/components/schemas/People"
                     contains:
-                      type: object
-                      properties:
-                        type:
-                          type: string
-                          enum: [man, woman, boy, girl]
+                      $ref: "#/components/schemas/People"
     post:
       summary: Create new people entry
       requestBody:
