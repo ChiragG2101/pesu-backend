@@ -49,6 +49,8 @@ tags:
     description: Authentication related endpoints
   - name: People
     description: People management endpoints
+  - name: Health
+    description: To setup CRON JOB to keep the render server up and running
 
 paths:
   /api/auth/login:
@@ -147,3 +149,16 @@ paths:
                       enum: [man, woman, boy, girl]
                     count:
                       type: integer
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      responses:
+        "200":
+          description: API is UP & Running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "API is UP & Running"
