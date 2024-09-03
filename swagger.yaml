@@ -44,9 +44,48 @@ components:
       required: ["type", "count"]
 security:
   - bearerAuth: []
+tags:
+  - name: Auth
+    description: Authentication related endpoints
+  - name: People
+    description: People management endpoints
+
 paths:
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+      responses:
+        "200":
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /api/people:
     get:
+      tags:
+        - People
       summary: Get all people
       responses:
         "200":
@@ -67,6 +106,8 @@ paths:
                     contains:
                       $ref: "#/components/schemas/People"
     post:
+      tags:
+        - People
       summary: Create new people entry
       requestBody:
         required: true
